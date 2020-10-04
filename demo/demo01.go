@@ -9,7 +9,13 @@ import (
 func main() {
 	start := time.Now()
 	settings := engine.DefaultRenderSettings()
-	camera := engine.ConstructCamera(settings.CameraPos, settings.VFoVDegrees, settings.AspectRatio)
+	camera := engine.ConstructCamera(
+		engine.Point{1.4, 1, 1.7},
+		engine.Point{0.2, 0, -1},
+		engine.Vec{0, 1, 0},
+		35,
+		settings.AspectRatio,
+	)
 	rendered := engine.Render(settings, createScene(), camera)
 	t := time.Now()
 	elapsed := t.Sub(start)
@@ -28,7 +34,7 @@ func createScene() engine.HittableList {
 	materialFront := &engine.Lambertian{
 		Albedo: engine.Color{X: 0.7, Y: 0.3, Z: 0.3},
 	}
-	materialFront2 := &engine.Dielectric{
+	materialGlass := &engine.Dielectric{
 		RefIdx: 1.5,
 	}
 	materialCenter := &engine.Metal{
@@ -56,7 +62,7 @@ func createScene() engine.HittableList {
 	world.Add(&engine.Sphere{
 		Center:   engine.Point{X: 0.4, Y: -0.4, Z: -0.7},
 		Radius:   0.1,
-		Material: materialFront2,
+		Material: materialGlass,
 	})
 	world.Add(&engine.Sphere{
 		Center:   engine.Point{Z: -1},
