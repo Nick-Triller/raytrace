@@ -28,6 +28,9 @@ func createScene() engine.HittableList {
 	materialFront := &engine.Lambertian{
 		Albedo: engine.Color{X: 0.7, Y: 0.3, Z: 0.3},
 	}
+	materialFront2 := &engine.Dielectric{
+		RefIdx: 1.5,
+	}
 	materialCenter := &engine.Metal{
 		Albedo: engine.Color{X: 0.2, Y: 0.3, Z: 0.7},
 		Fuzz:   0.3,
@@ -49,6 +52,11 @@ func createScene() engine.HittableList {
 		Center:   engine.Point{X: -0.4, Y: -0.4, Z: -0.7},
 		Radius:   0.1,
 		Material: materialFront,
+	})
+	world.Add(&engine.Sphere{
+		Center:   engine.Point{X: 0.4, Y: -0.4, Z: -0.7},
+		Radius:   0.1,
+		Material: materialFront2,
 	})
 	world.Add(&engine.Sphere{
 		Center:   engine.Point{Z: -1},
