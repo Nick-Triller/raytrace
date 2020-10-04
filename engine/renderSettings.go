@@ -19,14 +19,11 @@ type RenderSettings struct {
 	MaxDepth        int
 	FileName        string
 	Parallelism		int
-	// Vertical field-of-view
-	VFoVDegrees float64
-	CameraPos   Vec
 }
 
 func DefaultRenderSettings() RenderSettings {
 	// Keep one core idle so the machine keeps working smoothly while rendering an image
-	parallelism := runtime.NumCPU() - 1
+	parallelism := runtime.NumCPU() - 0
 	if parallelism <= 0 {
 		parallelism = 1
 	}
@@ -35,11 +32,9 @@ func DefaultRenderSettings() RenderSettings {
 		RandomUnitVectorStrategy,
 		16. / 9.,
 		800,
-		50,
+		500,
 		50,
 		"out/image.png",
 		parallelism,
-		35,
-		Vec{0, 0, 2},
 	}
 }

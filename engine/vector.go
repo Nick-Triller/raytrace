@@ -154,8 +154,12 @@ func RandomInHemisphere(normal Vec, r *rand.Rand) Vec {
 	return inUnitSphere.MultiplyScalar(-1)
 }
 
-func Cross(v1 Vec, v2 Vec) float64 {
-	return 0
+func Cross(u Vec, v Vec) Vec {
+	return Vec{
+		u.Y * v.Z - u.Z * v.Y,
+		u.Z * v.X - u.X * v.Z,
+		u.X * v.Y - u.Y * v.X,
+	}
 }
 
 func (v Vec) Normalize() Vec {

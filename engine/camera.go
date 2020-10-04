@@ -17,10 +17,9 @@ type Camera struct {
 	VFoVDegrees float64
 }
 
-func ConstructCamera(cameraPos Point, vFoVDegrees, aspectRatio float64) *Camera {
+func ConstructCamera(lookfrom Point, lookat Point, viewUp Vec, vFoVDegrees, aspectRatio float64) *Camera {
 	c := &Camera{}
 	c.AspectRatio = aspectRatio
-	c.Origin = cameraPos
 	c.FocalLength = 1
 	// fov
 	c.VFoVDegrees = vFoVDegrees
@@ -28,21 +27,27 @@ func ConstructCamera(cameraPos Point, vFoVDegrees, aspectRatio float64) *Camera 
 	h := math.Tan(theta / 2)
 	c.ViewportHeight = 2 * h
 	c.ViewportWidth = c.AspectRatio * c.ViewportHeight
-	c.Horizontal = Vec{c.ViewportWidth, 0, 0}
 	c.Vertical = Vec{0, c.ViewportHeight, 0}
+
+	w := lookfrom.Subtract(lookat).Normalize()
+	u := Cross(viewUp, w).Normalize()
+	v := Cross(w, u)
+	c.Origin = lookfrom
+	c.Horizontal = u.MultiplyScalar(c.ViewportWidth)
+	c.Vertical = v.MultiplyScalar(c.ViewportHeight)
 	c.LowerLeftCorner = c.Origin.
 		Subtract(c.Horizontal.DivideScalar(2)).
 		Subtract(c.Vertical.DivideScalar(2)).
-		SubtractScalars(0, 0, c.FocalLength)
+		Subtract(w)
 	return c
 }
 
-func (c *Camera) getRay(u, v float64) *Ray {
+func (c *Camera) getRay(s, t float64) *Ray {
 	return &Ray{
 		Origin:    c.Origin,
 		Direction: c.LowerLeftCorner.
-			Add(c.Horizontal.MultiplyScalar(u)).
-			Add(c.Vertical.MultiplyScalar(v)).
+			Add(c.Horizontal.MultiplyScalar(s)).
+			Add(c.Vertical.MultiplyScalar(t)).
 			Subtract(c.Origin),
 	}
 }
