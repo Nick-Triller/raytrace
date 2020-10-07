@@ -2,29 +2,46 @@ package main
 
 import (
 	"log"
+	_ "net/http/pprof"
+	"os"
 	"raytrace/engine"
+	"runtime/pprof"
 	"time"
 )
 
 func main() {
 	start := time.Now()
+
 	settings := engine.DefaultRenderSettings()
+	settings.FileName = "./out/demo01.png"
+
+	if settings.CpuProfiling {
+		f, err := os.Create("cpu.prof")
+		if err != nil {
+			log.Fatal("could not create CPU profile: ", err)
+		}
+		defer f.Close()
+		if err := pprof.StartCPUProfile(f); err != nil {
+			log.Fatal("could not start CPU profile: ", err)
+		}
+		defer pprof.StopCPUProfile()
+	}
+
 	camera := engine.ConstructCamera(
-		engine.Point{1.4, 1, 1.7},
-		engine.Point{0.2, 0, -1},
+		engine.Point{1.4, 0.7, 1.7},
+		engine.Point{0.2, 0.55, -1},
 		engine.Vec{0, 1, 0},
 		35,
 		settings.AspectRatio,
 	)
-	rendered := engine.Render(settings, createScene(), camera)
+	rendered := engine.Render(settings, createSpheresScene(), camera)
 	t := time.Now()
 	elapsed := t.Sub(start)
 	log.Printf("Total render time: %s", elapsed)
 	engine.WriteToFile(rendered, settings.FileName)
 }
 
-func createScene() engine.HittableList {
-	// Scene
+func createSpheresScene() engine.HittableList {
 	world := engine.HittableList{
 		Objects: make([]engine.Hittable, 0),
 	}
@@ -49,33 +66,33 @@ func createScene() engine.HittableList {
 		Fuzz:   0.5,
 	}
 
-	world.Add(&engine.Sphere{
-		Center:   engine.Point{Y: -100.5, Z: -1},
-		Radius:   100,
-		Material: materialGround,
+	world.Add(&engine.Plane{
+		engine.Point{0, 0, 0},
+		materialGround,
+		engine.Vec{0, 1, 0},
 	})
 	world.Add(&engine.Sphere{
-		Center:   engine.Point{X: -0.4, Y: -0.4, Z: -0.7},
+		Center:   engine.Point{X: -0.4, Y: 0.1, Z: -0.7},
 		Radius:   0.1,
 		Material: materialFront,
 	})
 	world.Add(&engine.Sphere{
-		Center:   engine.Point{X: 0.4, Y: -0.4, Z: -0.7},
+		Center:   engine.Point{X: 0.4, Y: 0.1, Z: -0.7},
 		Radius:   0.1,
 		Material: materialGlass,
 	})
 	world.Add(&engine.Sphere{
-		Center:   engine.Point{Z: -1},
+		Center:   engine.Point{Z: -1, Y: 0.5},
 		Radius:   0.5,
 		Material: materialCenter,
 	})
 	world.Add(&engine.Sphere{
-		Center:   engine.Point{X: -1.07, Z: -1},
+		Center:   engine.Point{X: -1.07, Y: 0.5, Z: -1},
 		Radius:   0.5,
 		Material: materialLeft,
 	})
 	world.Add(&engine.Sphere{
-		Center:   engine.Point{X: 1.07, Z: -1},
+		Center:   engine.Point{X: 1.07, Y: 0.5, Z: -1},
 		Radius:   0.5,
 		Material: materialRight,
 	})

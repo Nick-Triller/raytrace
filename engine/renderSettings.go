@@ -4,7 +4,7 @@ import "runtime"
 
 type DiffuseRenderStrategy string
 
-const(
+const (
 	RandomInUnitSphereStrategy      DiffuseRenderStrategy = "RandomInUnitSphereStrategy"
 	RandomUnitVectorStrategy                              = "RandomUnitVectorStrategy"
 	HemisphericalScatteringStrategy                       = "HemisphericalScatteringStrategy"
@@ -19,22 +19,19 @@ type RenderSettings struct {
 	MaxDepth        int
 	FileName        string
 	Parallelism		int
+	CpuProfiling	bool
 }
 
 func DefaultRenderSettings() RenderSettings {
-	// Keep one core idle so the machine keeps working smoothly while rendering an image
-	parallelism := runtime.NumCPU() - 0
-	if parallelism <= 0 {
-		parallelism = 1
-	}
-
+	parallelism := runtime.NumCPU()
 	return RenderSettings{
 		RandomUnitVectorStrategy,
 		16. / 9.,
-		800,
-		500,
+		2000,
+		1000,
 		50,
 		"out/image.png",
 		parallelism,
+		false,
 	}
 }
