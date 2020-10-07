@@ -16,7 +16,7 @@ Rendering can take a long time depending on number of CPU cores, image resolutio
 and samples per pixel.
 
 ```
-go run demo/demo01.go
+go run demo/demo01/main.go
 ```
 
 ![](./img/demo01.png)
