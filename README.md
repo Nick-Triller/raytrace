@@ -6,6 +6,10 @@ It was created for educational purposes as part of
 It's code is heavily inspired by the C++ code from the book 
 ["Ray Tracing in One Weekend"](https://raytracing.github.io/books/RayTracingInOneWeekend.html).
 
+## Configuration
+
+Checkout [renderSettings.go](./engine/renderSettings.go).
+
 ## Usage
 
 Rendering can take a long time depending on number of CPU cores, image resolution 
