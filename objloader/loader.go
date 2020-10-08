@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-func ReadFromFile(filename string, material engine.Material) *engine.HittableList {
+func ReadFromFile(filename string, material engine.Material, ignoreErrors bool) *engine.HittableList {
 	file, err := os.Open(filename)
 	if err != nil {
 		log.Fatal(err)
@@ -18,11 +18,10 @@ func ReadFromFile(filename string, material engine.Material) *engine.HittableLis
 	scanner := bufio.NewScanner(file)
 	mesh := &engine.HittableList{}
 	vertices := make([]engine.Point, 0)
-	// objects := make([]float64, 0)
 	for scanner.Scan() {
 		line := scanner.Text()
-		if line == "" {
-			// Skip empty lines
+		if line == "" || line[0] == '#' {
+			// Skip empty lines and comment lines
 			continue
 		}
 		fields := strings.Split(line, " ")
@@ -33,13 +32,15 @@ func ReadFromFile(filename string, material engine.Material) *engine.HittableLis
 			z := parseFloat64(fields[3])
 			vertices = append(vertices, engine.Point{x, y, z})
 		case "f":
-			v1id := parseInt(fields[1])
-			v2id := parseInt(fields[2])
-			v3id := parseInt(fields[3])
+			v1id := parseInt(strings.Split(fields[1], "/")[0])
+			v2id := parseInt(strings.Split(fields[2], "/")[0])
+			v3id := parseInt(strings.Split(fields[3], "/")[0])
 			triangle := engine.NewTriangle(vertices[v1id - 1], vertices[v2id - 1], vertices[v3id - 1], material)
 			mesh.Objects = append(mesh.Objects, triangle)
 		default:
-			log.Fatalf("Failed to parse .obj file, encountered unknown token \"%s\"\n", fields[0])
+			if !ignoreErrors {
+				log.Fatalf("Failed to parse .obj file, encountered unknown token \"%s\"\n", fields[0])
+			}
 		}
 	}
 

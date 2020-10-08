@@ -47,7 +47,7 @@ func createCubeScene() *engine.HittableList {
 		Radius:   0.2,
 		Material: materialSphere,
 	})
-	mesh := objloader.ReadFromFile("demo/demo02/models/cube.obj", materialLeft)
+	mesh := objloader.ReadFromFile("demo/demo02/models/cube.obj", materialLeft, false)
 	world.Add(mesh)
 	return world
 }
