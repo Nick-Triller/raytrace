@@ -41,10 +41,8 @@ func main() {
 	engine.WriteToFile(rendered, settings.FileName)
 }
 
-func createSpheresScene() engine.HittableList {
-	world := engine.HittableList{
-		Objects: make([]engine.Hittable, 0),
-	}
+func createSpheresScene() *engine.HittableList {
+	world := &engine.HittableList{}
 	materialGround := &engine.Lambertian{
 		Albedo: engine.Color{X: 0.8, Y: 0.8, Z: 0.8},
 	}

@@ -27,8 +27,8 @@ func DefaultRenderSettings() RenderSettings {
 	return RenderSettings{
 		RandomUnitVectorStrategy,
 		16. / 9.,
-		2000,
-		1000,
+		900,
+		100,
 		50,
 		"out/image.png",
 		parallelism,

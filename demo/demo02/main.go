@@ -26,10 +26,8 @@ func main() {
 	engine.WriteToFile(rendered, settings.FileName)
 }
 
-func createCubeScene() engine.HittableList {
-	world := engine.HittableList{
-		Objects: make([]engine.Hittable, 0),
-	}
+func createCubeScene() *engine.HittableList {
+	world := &engine.HittableList{}
 	materialLeft := &engine.Metal{
 		Albedo: engine.Color{X: 0.7, Y: 0.8, Z: 0.8},
 	}

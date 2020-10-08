@@ -31,3 +31,7 @@ func (p *Plane) hit(ray *Ray, tMin, tMax float64) (*hitRecord, bool) {
 	return nil, false
 }
 
+// implement Hittable
+func (p *Plane) Translate(vec Vec) {
+	p.Center = p.Center.Add(vec)
+}

@@ -76,3 +76,10 @@ func (t *Triangle) contains(p Point) bool {
 	}
 	return true
 }
+
+// implement Hittable
+func (t *Triangle) Translate(vec Vec) {
+	t.V1 = t.V1.Add(vec)
+	t.V2 = t.V2.Add(vec)
+	t.V3 = t.V3.Add(vec)
+}

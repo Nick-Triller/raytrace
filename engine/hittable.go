@@ -19,6 +19,7 @@ func (r *hitRecord) setFaceNormal(ray *Ray, outwardNormal Vec) {
 
 type Hittable interface {
 	hit(ray *Ray, tMin float64, tMax float64) (*hitRecord, bool)
+	Translate(vec Vec)
 }
 
 type HittableList struct {
@@ -26,7 +27,7 @@ type HittableList struct {
 }
 
 // implement Hittable on HittableList
-func (hl HittableList) hit(ray *Ray, tMin float64, tMax float64) (*hitRecord, bool) {
+func (hl *HittableList) hit(ray *Ray, tMin float64, tMax float64) (*hitRecord, bool) {
 	var closestRec *hitRecord = nil
 	var hitAnything bool
 	closest := tMax
@@ -40,6 +41,13 @@ func (hl HittableList) hit(ray *Ray, tMin float64, tMax float64) (*hitRecord, bo
 		}
 	}
 	return closestRec, hitAnything
+}
+
+// implement Hittable on HittableList
+func (hl *HittableList) Translate(vec Vec) {
+	for _, object := range hl.Objects {
+		object.Translate(vec)
+	}
 }
 
 func (hl *HittableList) clear() {

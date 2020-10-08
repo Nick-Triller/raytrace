@@ -25,11 +25,9 @@ func main() {
 	engine.WriteToFile(rendered, settings.FileName)
 }
 
-func createTriangleScene() engine.HittableList {
+func createTriangleScene() *engine.HittableList {
 	// Scene
-	world := engine.HittableList{
-		Objects: make([]engine.Hittable, 0),
-	}
+	world := &engine.HittableList{}
 	groundMaterial := &engine.Lambertian{
 		Albedo: engine.Color{0.5, 0.5, 0.5},
 	}
