@@ -34,3 +34,8 @@ func (s *Sphere) hit(ray *Ray, tMin float64, tMax float64) (*hitRecord, bool) {
 
 	return nil, false
 }
+
+// implement Hittable
+func (s *Sphere) Translate(vec Vec) {
+	s.Center = s.Center.Add(vec)
+}

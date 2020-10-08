@@ -25,11 +25,9 @@ func main() {
 	engine.WriteToFile(rendered, settings.FileName)
 }
 
-func createPlaneScene() engine.HittableList {
+func createPlaneScene() *engine.HittableList {
 	// Scene
-	world := engine.HittableList{
-		Objects: make([]engine.Hittable, 0),
-	}
+	world := &engine.HittableList{}
 	groundMaterial := &engine.Lambertian{
 		Albedo: engine.Color{0.5, 0.5, 0.5},
 	}
