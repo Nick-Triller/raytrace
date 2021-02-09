@@ -18,18 +18,18 @@ type RenderSettings struct {
 	SamplesPerPixel int
 	MaxDepth        int
 	FileName        string
-	Parallelism		int
-	CpuProfiling	bool
+	Parallelism     int
+	CpuProfiling    bool
 }
 
 func DefaultRenderSettings() RenderSettings {
 	parallelism := runtime.NumCPU()
 	return RenderSettings{
 		RandomUnitVectorStrategy,
-		16. / 9.,
-		900,
-		100,
-		50,
+		16. / 10.,
+		600,
+		25,
+		8,
 		"out/image.png",
 		parallelism,
 		false,

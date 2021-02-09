@@ -1,16 +1,21 @@
 package engine
 
-import "math"
+import (
+	"fmt"
+	"math"
+)
+
+// 8,5 min expected
 
 // Related resource:
 // https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-rendering-a-triangle/geometry-of-a-triangle
 
 type Triangle struct {
-	V1   Point
-	V2   Point
-	V3   Point
+	V1       Point
+	V2       Point
+	V3       Point
 	Material Material
-	Normal Vec
+	Normal   Vec
 }
 
 func NewTriangle(v1, v2, v3 Point, m Material) *Triangle {
@@ -39,9 +44,9 @@ func (t *Triangle) hit(ray *Ray, tMin float64, tMax float64) (*hitRecord, bool) 
 			hitPoint := ray.Interpolate(time)
 			if t.contains(hitPoint) {
 				record := &hitRecord{
-					p:         hitPoint,
-					t:         time,
-					material:  t.Material,
+					p:        hitPoint,
+					t:        time,
+					material: t.Material,
 				}
 				outwardNormal := t.Normal
 				record.setFaceNormal(ray, outwardNormal)
@@ -50,6 +55,24 @@ func (t *Triangle) hit(ray *Ray, tMin float64, tMax float64) (*hitRecord, bool) 
 		}
 	}
 	return nil, false
+}
+
+// implement Hittable
+func (t *Triangle) boundingBox() (*aabb, bool) {
+	small := Point{
+		X: min(t.V1.X, t.V2.X, t.V3.X),
+		Y: min(t.V1.Y, t.V2.Y, t.V3.Y),
+		Z: min(t.V1.Z, t.V2.Z, t.V3.Z),
+	}
+	big := Point{
+		X: max(t.V1.X, t.V2.X, t.V3.X),
+		Y: max(t.V1.Y, t.V2.Y, t.V3.Y),
+		Z: max(t.V1.Z, t.V2.Z, t.V3.Z),
+	}
+	return &aabb{
+		min: small,
+		max: big,
+	}, true
 }
 
 func (t *Triangle) contains(p Point) bool {
@@ -82,4 +105,29 @@ func (t *Triangle) Translate(vec Vec) {
 	t.V1 = t.V1.Add(vec)
 	t.V2 = t.V2.Add(vec)
 	t.V3 = t.V3.Add(vec)
+}
+
+func min(nums ...float64) float64 {
+	min := nums[0]
+	for _, num := range nums {
+		if num < min {
+			min = num
+		}
+	}
+	return min
+}
+
+func max(nums ...float64) float64 {
+	max := nums[0]
+	for _, num := range nums {
+		if num > max {
+			max = num
+		}
+	}
+	return max
+}
+
+// Implement Stringer
+func (t *Triangle) String() string {
+	return fmt.Sprintf("{%v, %v %v}", t.V1, t.V2, t.V3)
 }

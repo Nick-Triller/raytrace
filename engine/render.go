@@ -36,7 +36,7 @@ func rayColor(ray *Ray, world Hittable, depth int, r *rand.Rand) Color {
 	return a.Add(b)
 }
 
-func Render(settings RenderSettings, world *HittableList, camera *Camera) *image.RGBA {
+func Render(settings RenderSettings, world Hittable, camera *Camera) *image.RGBA {
 	diffuseStrategy = settings.DiffuseStrategy
 	images := make([]*image.RGBA, 0, settings.Parallelism)
 	resultChan := make(chan *image.RGBA)
@@ -52,7 +52,7 @@ func Render(settings RenderSettings, world *HittableList, camera *Camera) *image
 	return combineImages(images...)
 }
 
-func renderWorker(settings RenderSettings, camera *Camera, world *HittableList, workerId int, resultChan chan *image.RGBA) {
+func renderWorker(settings RenderSettings, camera *Camera, world Hittable, workerId int, resultChan chan *image.RGBA) {
 	start := time.Now()
 
 	r := rand.New(rand.NewSource(int64(workerId)))

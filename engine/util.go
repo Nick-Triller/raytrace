@@ -23,6 +23,10 @@ func randFloat64(min, max float64, r *rand.Rand) float64 {
 	return r.Float64() * (max - min) + min
 }
 
+func randInt(min, max int, r *rand.Rand) int {
+	return int(randFloat64(float64(min), float64(max), r))
+}
+
 func WriteToFile(img *image.RGBA, fileName string) {
 	// Encode as PNG.
 	f, _ := os.Create(fileName)
