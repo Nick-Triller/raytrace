@@ -32,6 +32,12 @@ func (p *Plane) hit(ray *Ray, tMin, tMax float64) (*hitRecord, bool) {
 }
 
 // implement Hittable
+func (p *Plane) boundingBox() (*aabb, bool) {
+	// An infinite plane has no bounding box
+	return nil, false
+}
+
+// implement Hittable
 func (p *Plane) Translate(vec Vec) {
 	p.Center = p.Center.Add(vec)
 }

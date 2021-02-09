@@ -1,7 +1,5 @@
 package engine
 
-import "runtime"
-
 type DiffuseRenderStrategy string
 
 const (
@@ -23,13 +21,13 @@ type RenderSettings struct {
 }
 
 func DefaultRenderSettings() RenderSettings {
-	parallelism := runtime.NumCPU()
+	parallelism := 1 // runtime.NumCPU()
 	return RenderSettings{
 		RandomUnitVectorStrategy,
-		16. / 9.,
-		900,
-		100,
-		50,
+		16. / 10.,
+		600,
+		3,
+		6,
 		"out/image.png",
 		parallelism,
 		false,

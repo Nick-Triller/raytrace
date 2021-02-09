@@ -36,7 +36,7 @@ func ReadFromFile(filename string, material engine.Material, ignoreErrors bool) 
 			v2id := parseInt(strings.Split(fields[2], "/")[0])
 			v3id := parseInt(strings.Split(fields[3], "/")[0])
 			triangle := engine.NewTriangle(vertices[v1id - 1], vertices[v2id - 1], vertices[v3id - 1], material)
-			mesh.Objects = append(mesh.Objects, triangle)
+			mesh.Add(triangle)
 		default:
 			if !ignoreErrors {
 				log.Fatalf("Failed to parse .obj file, encountered unknown token \"%s\"\n", fields[0])

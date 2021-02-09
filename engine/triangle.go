@@ -2,6 +2,8 @@ package engine
 
 import "math"
 
+// 8,5 min expected
+
 // Related resource:
 // https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-rendering-a-triangle/geometry-of-a-triangle
 
@@ -52,6 +54,24 @@ func (t *Triangle) hit(ray *Ray, tMin float64, tMax float64) (*hitRecord, bool) 
 	return nil, false
 }
 
+// implement Hittable
+func (t *Triangle) boundingBox() (*aabb, bool) {
+	small := Point{
+		X: min(t.V1.X, t.V2.X, t.V3.X),
+		Y: min(t.V1.Y, t.V2.Y, t.V3.Y),
+		Z: min(t.V1.Z, t.V2.Z, t.V3.Z),
+	}
+	big := Point{
+		X: max(t.V1.X, t.V2.X, t.V3.X),
+		Y: max(t.V1.Y, t.V2.Y, t.V3.Y),
+		Z: max(t.V1.Z, t.V2.Z, t.V3.Z),
+	}
+	return &aabb{
+		min: small,
+		max: big,
+	}, true
+}
+
 func (t *Triangle) contains(p Point) bool {
 	// edge1
 	edge1 := t.V2.Subtract(t.V1)
@@ -82,4 +102,24 @@ func (t *Triangle) Translate(vec Vec) {
 	t.V1 = t.V1.Add(vec)
 	t.V2 = t.V2.Add(vec)
 	t.V3 = t.V3.Add(vec)
+}
+
+func min(nums ...float64) float64 {
+	min := nums[0]
+	for _, num := range nums {
+		if num < min {
+			min = num
+		}
+	}
+	return min
+}
+
+func max(nums ...float64) float64 {
+	min := nums[0]
+	for _, num := range nums {
+		if num > min {
+			min = num
+		}
+	}
+	return min
 }

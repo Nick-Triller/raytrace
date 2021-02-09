@@ -36,6 +36,14 @@ func (s *Sphere) hit(ray *Ray, tMin float64, tMax float64) (*hitRecord, bool) {
 }
 
 // implement Hittable
+func (s *Sphere) boundingBox() (*aabb, bool) {
+	return &aabb{
+		min: s.Center.SubtractScalars(s.Radius, s.Radius, s.Radius),
+		max: s.Center.AddScalars(s.Radius, s.Radius, s.Radius),
+	}, true
+}
+
+// implement Hittable
 func (s *Sphere) Translate(vec Vec) {
 	s.Center = s.Center.Add(vec)
 }

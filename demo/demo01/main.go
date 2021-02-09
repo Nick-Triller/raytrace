@@ -41,11 +41,11 @@ func main() {
 	engine.WriteToFile(rendered, settings.FileName)
 }
 
-func createSpheresScene() *engine.HittableList {
+func createSpheresScene() engine.Hittable {
 	world := &engine.HittableList{}
-	materialGround := &engine.Lambertian{
-		Albedo: engine.Color{X: 0.8, Y: 0.8, Z: 0.8},
-	}
+	//materialGround := &engine.Lambertian{
+	//	Albedo: engine.Color{X: 0.8, Y: 0.8, Z: 0.8},
+	//}
 	materialFront := &engine.Lambertian{
 		Albedo: engine.Color{X: 0.7, Y: 0.3, Z: 0.3},
 	}
@@ -64,11 +64,11 @@ func createSpheresScene() *engine.HittableList {
 		Fuzz:   0.5,
 	}
 
-	world.Add(&engine.Plane{
-		engine.Point{0, 0, 0},
-		materialGround,
-		engine.Vec{0, 1, 0},
-	})
+	//world.Add(&engine.Plane{
+	//	engine.Point{0, 0, 0},
+	//	materialGround,
+	//	engine.Vec{0, 1, 0},
+	//})
 	world.Add(&engine.Sphere{
 		Center:   engine.Point{X: -0.4, Y: 0.1, Z: -0.7},
 		Radius:   0.1,
@@ -79,11 +79,13 @@ func createSpheresScene() *engine.HittableList {
 		Radius:   0.1,
 		Material: materialGlass,
 	})
-	world.Add(&engine.Sphere{
-		Center:   engine.Point{Z: -1, Y: 0.5},
-		Radius:   0.5,
-		Material: materialCenter,
-	})
+	for i := 0 ; i < 5000; i++ {
+		world.Add(&engine.Sphere{
+			Center:   engine.Point{Z: -1, Y: 0.5, X: 0 + float64(i) * 0.001},
+			Radius:   0.5,
+			Material: materialCenter,
+		})
+	}
 	world.Add(&engine.Sphere{
 		Center:   engine.Point{X: -1.07, Y: 0.5, Z: -1},
 		Radius:   0.5,
@@ -94,5 +96,9 @@ func createSpheresScene() *engine.HittableList {
 		Radius:   0.5,
 		Material: materialRight,
 	})
+
+	// r := rand.New(rand.NewSource(int64(0)))
+	// bvhTree := engine.NewBvhNode(world.Objects, 0, len(world.Objects), r)
+
 	return world
 }

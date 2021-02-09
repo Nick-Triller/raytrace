@@ -36,7 +36,7 @@ func rayColor(ray *Ray, world Hittable, depth int, r *rand.Rand) Color {
 	return a.Add(b)
 }
 
-func Render(settings RenderSettings, world *HittableList, camera *Camera) *image.RGBA {
+func Render(settings RenderSettings, world Hittable, camera *Camera) *image.RGBA {
 	diffuseStrategy = settings.DiffuseStrategy
 	images := make([]*image.RGBA, 0, settings.Parallelism)
 	resultChan := make(chan *image.RGBA)
@@ -52,7 +52,7 @@ func Render(settings RenderSettings, world *HittableList, camera *Camera) *image
 	return combineImages(images...)
 }
 
-func renderWorker(settings RenderSettings, camera *Camera, world *HittableList, workerId int, resultChan chan *image.RGBA) {
+func renderWorker(settings RenderSettings, camera *Camera, world Hittable, workerId int, resultChan chan *image.RGBA) {
 	start := time.Now()
 
 	r := rand.New(rand.NewSource(int64(workerId)))
@@ -71,9 +71,12 @@ func renderWorker(settings RenderSettings, camera *Camera, world *HittableList, 
 		for i := 0; i < settings.ImageWidth; i++ {
 			var pixelColor Color
 			for s := 0; s < int(samplesPerWorker); s++ {
-				u := (float64(i) + r.Float64()) / float64(settings.ImageWidth- 1)
-				v := (float64(j) + r.Float64()) / float64(imageHeight - 1)
-				ray := camera.getRay(u, v)
+				// u := (float64(i) + r.Float64()) / float64(settings.ImageWidth- 1)
+				// v := (float64(j) + r.Float64()) / float64(imageHeight - 1)
+				// ray := camera.getRay(u, v)
+				x := 0.5
+				y := 0.5
+				ray := camera.getRay(x, y)
 				pixelColor = pixelColor.Add(rayColor(ray, world, settings.MaxDepth, r))
 			}
 			pixelColor = pixelColor.DivideScalar(samplesPerWorker)
