@@ -35,8 +35,8 @@ func ReadFromFile(filename string, material engine.Material, ignoreErrors bool) 
 			v1id := parseInt(strings.Split(fields[1], "/")[0])
 			v2id := parseInt(strings.Split(fields[2], "/")[0])
 			v3id := parseInt(strings.Split(fields[3], "/")[0])
-			triangle := engine.NewTriangle(vertices[v1id - 1], vertices[v2id - 1], vertices[v3id - 1], material)
-			mesh.Objects = append(mesh.Objects, triangle)
+			triangle := engine.NewTriangle(vertices[v1id-1], vertices[v2id-1], vertices[v3id-1], material)
+			mesh.Add(triangle)
 		default:
 			if !ignoreErrors {
 				log.Fatalf("Failed to parse .obj file, encountered unknown token \"%s\"\n", fields[0])
@@ -55,7 +55,7 @@ func parseFloat64(s string) float64 {
 	if s, err := strconv.ParseFloat(s, 64); err == nil {
 		return s
 	} else {
-		log.Fatalf("Failed to parse .obj file, failed to parse token \"%s\" as float64\n", s)
+		log.Fatalf("Failed to parse .obj file, failed to parse token \"%f\" as float64\n", s)
 	}
 	return 0
 }
