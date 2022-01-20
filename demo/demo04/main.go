@@ -47,9 +47,6 @@ func main() {
 	engine.WriteToFile(rendered, settings.FileName)
 }
 
-// 2m40s with bvh
-// 2m without bvh
-
 func createTriangleSphereScene() engine.Hittable {
 	materialLeft := &engine.Metal{
 		Albedo: engine.Color{X: 0.7, Y: 0.8, Z: 0.2},
