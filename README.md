@@ -22,15 +22,6 @@ go run demo/demo01/main.go
 
 ## Demos
 
-All demo images were rendered with these settings:
-
-| Property          | Value |
-|-------------------|-------|
-| Width             | 1680  |
-| Aspect ratio      | 16:10 |
-| Samples per pixel | 1000  |
-| Max depth         | 25    |
-
 ### demo01
 
 ![](./img/demo01.png)
@@ -42,3 +33,11 @@ All demo images were rendered with these settings:
 ### demo03
 
 ![](./img/demo03.png)
+
+### demo04
+
+![](./img/demo04.png)
+
+### demo05
+
+![](./img/demo05.png)
